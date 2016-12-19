@@ -1,0 +1,5 @@
+*.pyc
+env
+.client_secrets.json
+.credential_store.*
+photo_metadata_*.json
