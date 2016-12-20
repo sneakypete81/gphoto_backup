@@ -1,5 +1,16 @@
 *.pyc
-env
+__pycache__/
+
+coverage/
+.coverage
+
+.venv2/
+.venv3/
+
+dist/
+MANIFEST
+*.egg-info/
+
 .client_secrets.json
 .credential_store.*
 photo_metadata_*.json
