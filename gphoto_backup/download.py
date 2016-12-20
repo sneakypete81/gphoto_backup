@@ -7,7 +7,7 @@ from util import mkdir_if_needed, PBAR_WIDGETS, clear_progressbar
 
 
 def download_photos(albums, output_folder):
-    print "\nDownloading albums..."
+    print "\nDownloading albums to '%s'..." % output_folder
     mkdir_if_needed(output_folder)
     download_count = 0
 
