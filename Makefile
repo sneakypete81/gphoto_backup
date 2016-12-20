@@ -32,9 +32,6 @@ test: test2 #test3
 cover:
 	.venv2/bin/nosetests --with-coverage --cover-branches --cover-package=gphoto_backup --cover-html --cover-html-dir=coverage
 
-run:
-	bin/gphoto_backup
-
 doc:
 	rm -f README
 	pandoc README.md -o README -w rst
