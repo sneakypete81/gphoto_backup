@@ -1,0 +1,12 @@
+#!/usr/bin/python2
+
+import sys
+from os.path import abspath, dirname, join
+
+try:
+    import gphoto_backup
+except ImportError:
+    sys.path.append(abspath(join(dirname(__file__), '..')))
+
+from gphoto_backup import gphoto_backup
+gphoto_backup.main()
