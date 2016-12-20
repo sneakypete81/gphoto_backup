@@ -12,15 +12,22 @@ from download import download_photos
 from check import check_photos
 
 COMMANDS = ["download", "check", "metadata"]
+EPILOG = """
+Commands:
+    download : Download metadata and any missing photos (default).
+    check    : Run some checks on the downloaded photos.
+    metadata : Download metadata only.
+"""
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__, epilog=EPILOG,
+                                     formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument("command", nargs="?", default="download",
-                        help="What to do (default: 'download').")
-    parser.add_argument("source", help="Either a Google email address or a previously " +
+                        help="what to do (default: 'download')")
+    parser.add_argument("source", help="either a Google email address or a previously " +
                         "downloaded metadata.json file")
     parser.add_argument("--output-folder", "-o", default=".",
-                        help="Folder to store downloaded photos (default: '.').")
+                        help="folder to store downloaded photos (default: '.')")
 
     options = parser.parse_args(sys.argv[1:])
     if options.command not in COMMANDS:
