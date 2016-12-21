@@ -1,4 +1,4 @@
-all: clean venv test sdist
+all: clean venv test dist
 
 clean:
 	find gphoto_backup -type f -name *.pyc | xargs rm -rf
@@ -36,20 +36,15 @@ doc:
 	rm -f README
 	pandoc README.md -o README -w rst
 
-sdist2: clean doc
-	python2.7 setup.py sdist
+dist: clean doc
+	python2.7 setup.py sdist bdist_wheel
 
-# sdist3: clean doc
-# 	python3 setup.py sdist
-
-sdist: sdist2# sdist3
-
-install: sdist2
-	pip install dist/gphoto_backup-*.tar.gz ${ARGS}
+install: dist
+	pip install dist/gphoto_backup-*.whl ${ARGS}
 	rm -rf dist
 
 uninstall:
 	pip uninstall gphoto_backup
 
-publish: sdist
+publish: dist
 	twine upload dist/*

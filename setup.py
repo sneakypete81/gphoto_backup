@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-from distutils.core import setup
+from setuptools import setup
 
 setup(name="gphoto_backup",
       version="0.1.0",
