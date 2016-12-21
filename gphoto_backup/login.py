@@ -74,7 +74,9 @@ def _load_credentials(email):
 def _get_authorization_code(email, url):
     print
     print "You need to get permission to access the photos of %s." % email
-    print "Open the following link in your browser, and enter the resulting code below:"
+    print "1) Open the following link in your browser."
+    print "2) Make sure that you are signed in as %s." % email
+    print "3) Click 'Allow' and enter the resulting code below."
     print
     print url
     print
