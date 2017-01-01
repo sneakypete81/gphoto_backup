@@ -27,7 +27,7 @@ def download_metadata(gd_client):
 
         photos = gd_client.GetFeed("/data/feed/api/user/default/albumid/%s?kind=photo&imgmax=d"
                                    % album.gphoto_id.text).entry
-        _create_unique_filename(photos)
+        _create_unique_filenames(photos)
         albums[album_title] = photos
         clear_progressbar(pbar)
         print "%s (%d photos)" % (album_title, len(albums[album_title]))
@@ -41,7 +41,21 @@ def download_metadata(gd_client):
     json.dump(albums_xml, open(filename, "w"), indent=2)
     return albums
 
-def _create_unique_filename(photos):
+def read_metadata(filename):
+    print "\nReading metadata from %s..." % filename
+    albums = json.load(open(filename), object_pairs_hook=OrderedDict)
+
+    pbar = ProgressBar(widgets=PBAR_WIDGETS, maxval=len(albums)).start()
+    for i, album in enumerate(albums):
+        pbar.update(i)
+        albums[album] = [AnyEntryFromString(xml) for xml in albums[album]]
+        _create_unique_filenames(albums[album])
+        clear_progressbar(pbar)
+        print "%s (%d photos)" % (album, len(albums[album]))
+    pbar.finish()
+    return albums
+
+def _create_unique_filenames(photos):
     filenames = []
     for photo in photos:
         filename = photo.title.text
@@ -51,16 +65,3 @@ def _create_unique_filename(photos):
 
         filenames.append(filename)
         photo.filename = filename
-
-def read_metadata(filename):
-    print "\nReading metadata from %s..." % filename
-    albums = json.load(open(filename), object_pairs_hook=OrderedDict)
-
-    pbar = ProgressBar(widgets=PBAR_WIDGETS, maxval=len(albums)).start()
-    for i, album in enumerate(albums):
-        pbar.update(i)
-        albums[album] = [AnyEntryFromString(xml) for xml in albums[album]]
-        clear_progressbar(pbar)
-        print "%s (%d photos)" % (album, len(albums[album]))
-    pbar.finish()
-    return albums
