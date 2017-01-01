@@ -4,12 +4,11 @@ import os
 import sys
 import argparse
 
-from progressbar import ProgressBar
-
 from login import login
 from metadata import download_metadata, read_metadata
 from download import download_photos
 from check import check_photos
+from report import generate_html
 
 COMMANDS = ["download", "check", "metadata"]
 EPILOG = """
@@ -52,7 +51,8 @@ def main():
     if options.command == "download":
         download_photos(albums, output_folder)
     elif options.command == "check":
-        check_photos(albums, output_folder)
+        reports = check_photos(albums, output_folder)
+        generate_html(reports)
     elif options.command == "metadata":
         pass
 
