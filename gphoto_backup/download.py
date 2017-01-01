@@ -18,8 +18,7 @@ def download_photos(albums, output_folder):
         pbar.update(i)
         mkdir_if_needed(os.path.join(output_folder, album))
         for photo in albums[album]:
-            filename = photo.title.text
-            filepath = os.path.join(output_folder, album, filename)
+            filepath = os.path.join(output_folder, album, photo.filename)
             if os.path.exists(filepath):
                 continue
 

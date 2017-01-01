@@ -1,3 +1,4 @@
+import os
 import json
 from collections import OrderedDict
 from datetime import datetime
@@ -26,6 +27,7 @@ def download_metadata(gd_client):
 
         photos = gd_client.GetFeed("/data/feed/api/user/default/albumid/%s?kind=photo&imgmax=d"
                                    % album.gphoto_id.text).entry
+        _create_unique_filename(photos)
         albums[album_title] = photos
         clear_progressbar(pbar)
         print "%s (%d photos)" % (album_title, len(albums[album_title]))
@@ -38,6 +40,17 @@ def download_metadata(gd_client):
 
     json.dump(albums_xml, open(filename, "w"), indent=2)
     return albums
+
+def _create_unique_filename(photos):
+    filenames = []
+    for photo in photos:
+        filename = photo.title.text
+        while filename in filenames:
+            root, ext = os.path.splitext(filename)
+            filename = "%s_%s" % (root, ext)
+
+        filenames.append(filename)
+        photo.filename = filename
 
 def read_metadata(filename):
     print "\nReading metadata from %s..." % filename
