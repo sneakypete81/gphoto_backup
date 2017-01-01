@@ -3,3 +3,4 @@ httplib2
 oauth2client
 progressbar
 requests
+jinja2

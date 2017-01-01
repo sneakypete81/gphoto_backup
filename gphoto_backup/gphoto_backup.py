@@ -52,7 +52,8 @@ def main():
         download_photos(albums, output_folder)
     elif options.command == "check":
         reports = check_photos(albums, output_folder)
-        generate_html(reports)
+        html = generate_html(reports)
+        print html
     elif options.command == "metadata":
         pass
 

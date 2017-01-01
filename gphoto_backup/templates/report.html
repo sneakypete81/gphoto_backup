@@ -1,0 +1,13 @@
+<html>
+<head>
+  <title>GPhoto Backup Report</title>
+</head>
+<body>
+  <h1>GPhoto Backup Report</h1>
+  <ul>
+  {% for report in reports %}
+    <li>{{report.type_}}</li>
+  {% endfor %}
+  </ul>
+</body>
+</html>

@@ -1,3 +1,5 @@
+from jinja2 import Environment, PackageLoader
+
 class Report(object):
     MISSING_FOLDER = "missing_folder"
     MISSING_FILE = "missing_file"
@@ -13,5 +15,8 @@ class Report(object):
         return "<Report '%s'>" % self.type_
 
 def generate_html(reports):
-    for report in reports:
-        print report
+    env = Environment(loader=PackageLoader("gphoto_backup", "templates"))
+    template = env.get_template("report.html")
+    # pylint: disable=no-member
+    # (https://github.com/PyCQA/pylint/issues/490)
+    return template.render(reports=reports)
