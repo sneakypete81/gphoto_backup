@@ -4,10 +4,54 @@
 </head>
 <body>
   <h1>GPhoto Backup Report</h1>
-  <ul>
-  {% for report in reports %}
-    <li>{{report.type_}}</li>
+
+  <h2>Missing Folders</h2>
+  {% for album, list in reports|selectattr("report_type", "equalto", "missing_folder")|groupby('album') %}
+    <h3>{{album}}</h3>
+    <ul>
+      {% for report in list %}
+        <li>{{report.album_path}}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    No photos with this problem.
   {% endfor %}
-  </ul>
+
+  <h2>Missing Files</h2>
+  {% for album, list in reports|selectattr("report_type", "equalto", "missing_file")|groupby('album') %}
+    <h3>{{album}}</h3>
+    <ul>
+      {% for report in list %}
+        <li>{{report.photo_path}}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    No photos with this problem.
+  {% endfor %}
+
+  <h2>Size Mismatch</h2>
+  {% for album, list in reports|selectattr("report_type", "equalto", "size_mismatch")|groupby('album') %}
+    <h3>{{album}}</h3>
+    <table>
+      <tr>
+        <th>Google Photos</th>
+        <th>Downloaded</th>
+      </tr>
+      {% for report in list %}
+        <tr>
+          <td>
+            {{report.remote_size|filesizeformat}}<br>
+            <a href="{{report.remote_url}}"><img src="{{report.remote_url}}" width=64></a>
+          </td>
+          <td>
+            {{report.local_size|filesizeformat}}<br>
+            <a href="{{report.local_url}}"><img src="{{report.local_url}}" width=64></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    No photos with this problem.
+  {% endfor %}
 </body>
 </html>

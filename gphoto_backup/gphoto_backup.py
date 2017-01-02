@@ -3,12 +3,13 @@
 import os
 import sys
 import argparse
+import webbrowser
 
 from login import login
 from metadata import download_metadata, read_metadata
 from download import download_photos
 from check import check_photos
-from report import generate_html
+from report import generate_html, url_from_path
 
 COMMANDS = ["download", "check", "metadata"]
 EPILOG = """
@@ -17,6 +18,7 @@ Commands:
     check    : Run some checks on the downloaded photos.
     metadata : Download metadata only.
 """
+REPORT_FILEPATH = os.path.abspath("gphoto_backup_report.html")
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description=__doc__, epilog=EPILOG,
@@ -52,8 +54,8 @@ def main():
         download_photos(albums, output_folder)
     elif options.command == "check":
         reports = check_photos(albums, output_folder)
-        html = generate_html(reports)
-        print html
+        generate_html(reports, REPORT_FILEPATH)
+        webbrowser.open_new_tab(url_from_path(REPORT_FILEPATH))
     elif options.command == "metadata":
         pass
 
